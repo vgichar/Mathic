@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <solid android:color="#f0f0f0" />
+            </shape>
+        </clip>
+    </item>
+
+</layer-list><!-- From: file:/C:/Users/Vojdan/Documents/Android/mathic1/app/src/main/res/drawable-xhdpi/progress_bar.xml -->
