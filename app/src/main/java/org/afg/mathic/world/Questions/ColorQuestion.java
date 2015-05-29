@@ -55,10 +55,6 @@ public class ColorQuestion {
 		numColors--;
 		if (numColors == 0)
 			return colors;
-		colors.put("Black", Color.BLACK);
-		numColors--;
-		if (numColors == 0)
-			return colors;
 		colors.put("White", Color.WHITE);
 		numColors--;
 		if (numColors == 0)

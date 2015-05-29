@@ -8,4 +8,5 @@ public class Mode implements Serializable {
 	
 	public String name = "normal";
 	public Class activityClass;
+	public String highscoreKey;
 }

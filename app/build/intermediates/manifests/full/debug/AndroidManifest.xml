@@ -51,6 +51,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.afg.mathic.util.GameActivity" />
         </activity>
+        <activity
+            android:name="org.afg.mathic.world.Activities.HighscoreActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/Vojdan/Documents/Android/mathic1/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/vojda_000/Documents/Android/Mathic/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <attr format="reference" name="drawerArrowStyle"/>
     <attr format="dimension" name="height"/>
@@ -153,7 +153,7 @@
     <string name="abc_shareactionprovider_share_with">Share with</string>
     <string name="abc_shareactionprovider_share_with_application">Share with %s</string>
     <string name="abc_toolbar_collapse_description">Collapse</string>
-    <!-- From: file:/C:/Users/Vojdan/Documents/Android/mathic1/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/C:/Users/vojda_000/Documents/Android/Mathic/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="af">AF</string>
     <string name="app_name">mathic</string>
@@ -163,7 +163,7 @@
     <string name="start_game">start</string>
     <string name="verison">v0.1</string>
     <string name="yes">yes</string>
-    <!-- From: file:/C:/Users/Vojdan/Documents/Android/mathic1/app/src/main/res/values/styles.xml -->
+    <!-- From: file:/C:/Users/vojda_000/Documents/Android/Mathic/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
         <!-- API 11 theme customizations can go here. -->
@@ -171,7 +171,7 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-    <!-- From: file:/C:/Users/Vojdan/Documents/Android/mathic1/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/vojda_000/Documents/Android/Mathic/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <style name="Base.TextAppearance.AppCompat" parent="android:TextAppearance">
         <item name="android:textColor">?android:textColorPrimary</item>

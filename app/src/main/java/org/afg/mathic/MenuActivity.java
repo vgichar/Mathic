@@ -3,6 +3,7 @@ package org.afg.mathic;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.afg.mathic.util.MediaPlayerManager;
 import org.afg.mathic.world.Activities.*;
 import org.afg.mathic.R;
 import org.afg.mathic.world.Modes.ColorMode;
@@ -15,10 +16,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.Gravity;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
@@ -32,6 +37,22 @@ import android.widget.TextView;
 
 public class MenuActivity extends Activity {
 
+	public static boolean mIsSplashLoaded = false;
+	public static List<ModeGroup> mModeGroups;
+
+    public void mute(View v){
+        MediaPlayerManager.toggleMute();
+		if(MediaPlayerManager.isMuted()) {
+			((Button) v).setBackgroundResource(R.drawable.mute);
+		}else{
+			((Button) v).setBackgroundResource(R.drawable.unmute);
+		}
+
+        SharedPreferences.Editor edit = getSharedPreferences("sound", MODE_PRIVATE).edit();
+        edit.putBoolean(MediaPlayerManager.isMutedSoundKey, MediaPlayerManager.isMuted());
+        edit.commit();
+    }
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash_layout);
@@ -40,15 +61,35 @@ public class MenuActivity extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 		new Load(this).execute();
+
+		if(!MediaPlayerManager.isPlaying()){
+			MediaPlayerManager.play(R.raw.happy, this);
+		}
+
+		if(mIsSplashLoaded) {
+			if (MediaPlayerManager.isMuted()) {
+				((Button) findViewById(R.id.mute)).setBackgroundResource(R.drawable.mute);
+			} else {
+				((Button) findViewById(R.id.mute)).setBackgroundResource(R.drawable.unmute);
+			}
+		}else{
+            boolean isMutedFromSave = getSharedPreferences("sound", MODE_PRIVATE).getBoolean(MediaPlayerManager.isMutedSoundKey, false);
+            if(isMutedFromSave){
+                MediaPlayerManager.mute();
+            }else{
+                MediaPlayerManager.unmute();
+            }
+        }
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
-		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+	public void onDestroy() {
+		super.onDestroy();
+        MediaPlayerManager.stop();
+
+        mIsSplashLoaded = false;
 	}
 
 	@SuppressLint("ClickableViewAccessibility")
@@ -57,11 +98,19 @@ public class MenuActivity extends Activity {
 
 		public Load(Context ctx) {
 			this.ctx = ctx;
-		}
+        }
 
 		@Override
 		protected List<ModeGroup> doInBackground(Context... params) {
-			List<ModeGroup> modeGroups = new LinkedList<ModeGroup>();
+			mModeGroups = new LinkedList<ModeGroup>();
+
+            ModeGroup mg1 = new ModeGroup();
+            ModeGroup mg2 = new ModeGroup();
+            ModeGroup mg3 = new ModeGroup();
+
+            mg1.name = "Mathematic";
+            mg2.name = "Colors";
+            mg3.name = "Memory";
 
 			MathematicMode m1 = new MathematicMode();
 			MathematicMode m2 = new MathematicMode();
@@ -73,7 +122,8 @@ public class MenuActivity extends Activity {
 			MemoryMode m8 = new MemoryMode();
 			MemoryMode m9 = new MemoryMode();
 
-			m1.name = "easy";
+            m1.name = "easy";
+            m1.highscoreKey = String.format("%s_%s", mg1.name, m1.name);
 			m1.activityClass = MathematicGameActivity.class;
 			m1.timeChangeLevelRate = 5;
 			m1.timeChangeRate = 1.05;
@@ -82,6 +132,7 @@ public class MenuActivity extends Activity {
 			m1.startMaxNumbers = 2;
 
 			m2.name = "normal";
+            m2.highscoreKey = String.format("%s_%s", mg1.name, m2.name);
 			m2.activityClass = MathematicGameActivity.class;
 			m2.timeChangeLevelRate = 4;
 			m2.timeChangeRate = 1.075;
@@ -90,6 +141,7 @@ public class MenuActivity extends Activity {
 			m2.startMaxNumbers = 8;
 
 			m3.name = "hard";
+            m3.highscoreKey = String.format("%s_%s", mg1.name, m3.name);
 			m3.activityClass = MathematicGameActivity.class;
 			m3.timeChangeLevelRate = 3;
 			m3.timeChangeRate = 1.1;
@@ -98,6 +150,7 @@ public class MenuActivity extends Activity {
 			m3.startMaxNumbers = 15;
 
 			m4.name = "easy";
+            m4.highscoreKey = String.format("%s_%s", mg2.name, m4.name);
 			m4.activityClass = ColorGameActivity.class;
 			m4.timeChangeLevelRate = 5;
 			m4.timeChangeRate = 1.05;
@@ -105,20 +158,23 @@ public class MenuActivity extends Activity {
 			m4.numberOfColors = 6;
 
 			m5.name = "normal";
+            m5.highscoreKey = String.format("%s_%s", mg2.name, m5.name);
 			m5.activityClass = ColorGameActivity.class;
 			m5.timeChangeLevelRate = 4;
 			m5.timeChangeRate = 1.075;
 			m5.startTime = 1650;
-			m5.numberOfColors = 9;
+			m5.numberOfColors = 8;
 
 			m6.name = "hard";
+            m6.highscoreKey = String.format("%s_%s", mg2.name, m6.name);
 			m6.activityClass = ColorGameActivity.class;
 			m6.timeChangeLevelRate = 3;
 			m6.timeChangeRate = 1.1;
 			m6.startTime = 1300;
-			m6.numberOfColors = 12;
+			m6.numberOfColors = 11;
 
 			m7.name = "easy";
+            m7.highscoreKey = String.format("%s_%s", mg3.name, m7.name);
 			m7.activityClass = MemoryGameActivity.class;
 			m7.startTime = 5000;
 			m7.timeChangeLevelRate = 10;
@@ -128,6 +184,7 @@ public class MenuActivity extends Activity {
 			m7.fadeTime = 800;
 
 			m8.name = "normal";
+            m8.highscoreKey = String.format("%s_%s", mg3.name, m8.name);
 			m8.activityClass = MemoryGameActivity.class;
 			m8.startTime = 4200;
 			m8.timeChangeLevelRate = 6;
@@ -137,6 +194,7 @@ public class MenuActivity extends Activity {
 			m8.fadeTime = 700;
 
 			m9.name = "hard";
+            m9.highscoreKey = String.format("%s_%s", mg3.name, m9.name);
 			m9.activityClass = MemoryGameActivity.class;
 			m9.startTime = 3400;
 			m9.timeChangeLevelRate = 2;
@@ -145,42 +203,44 @@ public class MenuActivity extends Activity {
 			m9.falseColor.color = Color.BLACK;
 			m9.fadeTime = 600;
 			m9.hasBorders = false;
-			
 
-			ModeGroup mg1 = new ModeGroup();
-			ModeGroup mg2 = new ModeGroup();
-			ModeGroup mg3 = new ModeGroup();
-
-			mg1.name = "Mathematic";
 			mg1.modes.add(m1);
 			mg1.modes.add(m2);
 			mg1.modes.add(m3);
-			mg2.name = "Colors";
 			mg2.modes.add(m4);
 			mg2.modes.add(m5);
 			mg2.modes.add(m6);
-			mg3.name = "Memory";
 			mg3.modes.add(m7);
 			mg3.modes.add(m8);
 			mg3.modes.add(m9);
 
-			modeGroups.add(mg1);
-			modeGroups.add(mg2);
-			modeGroups.add(mg3);
+			mModeGroups.add(mg1);
+			mModeGroups.add(mg2);
+			mModeGroups.add(mg3);
 
 			try {
-				Thread.sleep(0000);
+				if(!mIsSplashLoaded) {
+					Thread.sleep(3000);
+				}
 			} catch (InterruptedException e) {
 				finish();
 			}
 
-			return modeGroups;
+			return mModeGroups;
 		}
 
 		@Override
 		protected void onPostExecute(List<ModeGroup> modeGroups) {
 			setContentView(R.layout.menu_layout);
-			LinearLayout container = (LinearLayout) findViewById(R.id.menu_container);
+			MenuActivity.mIsSplashLoaded = true;
+
+			if(MediaPlayerManager.isMuted()) {
+				((Button) findViewById(R.id.mute)).setBackgroundResource(R.drawable.mute);
+			}else{
+				((Button) findViewById(R.id.mute)).setBackgroundResource(R.drawable.unmute);
+			}
+
+			final LinearLayout container = (LinearLayout) findViewById(R.id.menu_container);
 			int red = 225;
 			int green = 225;
 			int blue = 225;
@@ -261,6 +321,7 @@ public class MenuActivity extends Activity {
 
 						@Override
 						public void onClick(View arg0) {
+                            MediaPlayerManager.stop();
 							Intent t = new Intent(ctx, m.activityClass);
 							t.putExtra("#Mode", m);
 							startActivity(t);
@@ -282,6 +343,27 @@ public class MenuActivity extends Activity {
 				container.addView(titleContainer);
 			}
 
+			Button tv = new Button(ctx);
+			tv.setText("Highscores");
+			tv.setTextSize(24f);
+			tv.setPadding(31, 31, 31, 31);
+			tv.setGravity(Gravity.CENTER);
+			tv.setTextColor(Color.rgb(255, 255, 255));
+			tv.setBackgroundColor(Color.rgb(30, 30, 30));
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			params.gravity = Gravity.CENTER;
+			tv.setLayoutParams(params);
+
+			tv.setOnClickListener(new View.OnClickListener(){
+
+				@Override
+				public void onClick(View v){
+					startActivity(new Intent(ctx, HighscoreActivity.class));
+					overridePendingTransition(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_top);
+				}
+			});
+
+			container.addView(tv);
 			container.invalidate();
 		}
 	}

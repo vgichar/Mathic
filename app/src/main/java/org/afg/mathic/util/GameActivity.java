@@ -7,15 +7,11 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 
 public abstract class GameActivity extends Activity{
-
-	protected MediaPlayer lostSound;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		
-		lostSound = MediaPlayer.create(this, R.raw.buzz);
-		lostSound.setLooping(true);
+		MediaPlayerManager.stop();
 	}
 
 	public abstract void initGame();

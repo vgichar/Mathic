@@ -3,10 +3,12 @@ package org.afg.mathic.world.Activities;
 import org.afg.mathic.R;
 import org.afg.mathic.util.AsyncTaskOptions;
 import org.afg.mathic.util.GameActivity;
+import org.afg.mathic.util.MediaPlayerManager;
 import org.afg.mathic.util.TimeLapse;
 import org.afg.mathic.world.Questions.ColorQuestion;
 import org.afg.mathic.world.Modes.ColorMode;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -76,7 +78,7 @@ public class ColorGameActivity extends GameActivity {
 	}
 
 	public void initGame() {
-		level = 0;
+		level = -1;
 		isGameStarted = false;
 		isGameRestarted = true;
 		tv_equation.setTextSize(mode.startTextSize);
@@ -97,6 +99,10 @@ public class ColorGameActivity extends GameActivity {
 		if (mode.hasTime) {
 			async_opt.resume();
 		}
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+		findViewById(R.id.tv_level).setVisibility(View.VISIBLE);
+		findViewById(R.id.info_button).setVisibility(View.GONE);
 	}
 
 	public void endGame() {
@@ -116,12 +122,23 @@ public class ColorGameActivity extends GameActivity {
 
 		try {
 			Thread.sleep(10);
-			lostSound.start();
+            MediaPlayerManager.play(R.raw.buzz, this);
 			Thread.sleep(300);
-			lostSound.pause();
+            MediaPlayerManager.pause();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		SharedPreferences preferences = getSharedPreferences("highscore", MODE_PRIVATE);
+		if(preferences.getInt(mode.highscoreKey, 0) < level) {
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.putInt(mode.highscoreKey, level);
+			editor.commit();
+		}
+
+		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		findViewById(R.id.tv_level).setVisibility(View.INVISIBLE);
+		findViewById(R.id.info_button).setVisibility(View.VISIBLE);
 	}
 
 	public void updateQuestion() {
