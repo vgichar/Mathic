@@ -34,6 +34,7 @@
             android:visibility="invisible"/>
 
         <ImageButton
+            android:onClick="info"
             android:id="@+id/info_button"
             android:background="@drawable/info_white"
             android:layout_gravity="center"

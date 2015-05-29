@@ -14,6 +14,8 @@ import org.afg.mathic.world.Questions.MemoryQuestion;
 import android.animation.Animator;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -46,6 +48,19 @@ public class MemoryGameActivity extends GameActivity {
 	private int level;
 	private boolean isGameStarted;
 	private boolean isGameRestarted;
+
+	public void info(View v){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Look at this dialog!")
+				.setCancelable(true)
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -98,10 +113,9 @@ public class MemoryGameActivity extends GameActivity {
 		isGameRestarted = true;
 		pb_timer.setMax(mode.startTime);
 		pb_timer.setProgress(mode.startTime);
-		puzzleButtons = new LinkedList<Button>();
+		puzzleButtons = new LinkedList<>();
 
-		((LinearLayout) findViewById(R.id.menu_button_container))
-				.setVisibility(LinearLayout.GONE);
+		findViewById(R.id.menu_button_container).setVisibility(LinearLayout.GONE);
 
 		updateQuestion();
 	}
@@ -112,7 +126,7 @@ public class MemoryGameActivity extends GameActivity {
 		isGameRestarted = false;
 		pb_timer.setMax(mode.startTime);
 		pb_timer.setProgress(mode.startTime);
-		puzzleButtons = new LinkedList<Button>();
+		puzzleButtons = new LinkedList<>();
 
 		TextView tv_restart = new TextView(this);
 		tv_restart.setTextSize(50);
@@ -123,8 +137,7 @@ public class MemoryGameActivity extends GameActivity {
 		grid_container.removeAllViews();
 		grid_container.addView(tv_restart);
 		grid_container.invalidate();
-		((LinearLayout) findViewById(R.id.menu_button_container))
-				.setVisibility(LinearLayout.VISIBLE);
+		findViewById(R.id.menu_button_container).setVisibility(LinearLayout.VISIBLE);
 	}
 
 	public void startGame() {
@@ -157,8 +170,7 @@ public class MemoryGameActivity extends GameActivity {
 		grid_container.removeAllViews();
 		grid_container.addView(tv_restart);
 		grid_container.invalidate();
-		((LinearLayout) findViewById(R.id.menu_button_container))
-				.setVisibility(LinearLayout.VISIBLE);
+		findViewById(R.id.menu_button_container).setVisibility(LinearLayout.VISIBLE);
 
 		try {
 			Thread.sleep(10);
@@ -213,7 +225,7 @@ public class MemoryGameActivity extends GameActivity {
 		grid_container.setBackgroundColor(falseColor.color);
 		current_puzzle = new MemoryQuestion(sizeX, sizeY, num);
 
-		final LinkedList<Button> buttons = new LinkedList<Button>();
+		final LinkedList<Button> buttons = new LinkedList<>();
 
 		for (int i = 0; i < sizeX; i++) {
 			LinearLayout ll = new LinearLayout(this);
@@ -246,7 +258,7 @@ public class MemoryGameActivity extends GameActivity {
 				if (i == 0) {
 					leftMargin = 1;
 				}
-				params.setMargins(topMargin, leftMargin, 1, 1);
+				params.setMargins(leftMargin, topMargin, 1, 1);
 
 				b.setLayoutParams(params);
 			}

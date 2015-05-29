@@ -8,6 +8,8 @@ import org.afg.mathic.util.TimeLapse;
 import org.afg.mathic.world.Questions.EquationQuestion;
 import org.afg.mathic.world.Modes.MathematicMode;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -32,6 +34,19 @@ public class MathematicGameActivity extends GameActivity {
 	private int level;
 	private boolean isGameStarted;
 	private boolean isGameRestarted;
+
+	public void info(View v){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Look at this dialog!")
+				.setCancelable(true)
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -86,10 +101,8 @@ public class MathematicGameActivity extends GameActivity {
 		pb_timer.setMax(mode.startTime);
 		pb_timer.setProgress(mode.startTime);
 
-		((LinearLayout) findViewById(R.id.button_container))
-				.setVisibility(LinearLayout.VISIBLE);
-		((LinearLayout) findViewById(R.id.menu_button_container))
-				.setVisibility(LinearLayout.GONE);
+		findViewById(R.id.button_container).setVisibility(LinearLayout.VISIBLE);
+		findViewById(R.id.menu_button_container).setVisibility(LinearLayout.GONE);
 
 		updateQuestion();
 	}
@@ -115,11 +128,8 @@ public class MathematicGameActivity extends GameActivity {
 			async_opt.pause();
 		}
 
-		((LinearLayout) findViewById(R.id.button_container))
-				.setVisibility(LinearLayout.GONE);
-
-		((LinearLayout) findViewById(R.id.menu_button_container))
-				.setVisibility(LinearLayout.VISIBLE);
+		findViewById(R.id.button_container).setVisibility(LinearLayout.GONE);
+		findViewById(R.id.menu_button_container).setVisibility(LinearLayout.VISIBLE);
 
 		try {
 			Thread.sleep(10);
