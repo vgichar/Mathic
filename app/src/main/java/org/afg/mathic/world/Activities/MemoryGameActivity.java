@@ -51,7 +51,7 @@ public class MemoryGameActivity extends GameActivity {
 
 	public void info(View v){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Look at this dialog!")
+		builder.setMessage("Click the dissapearing white squares")
 				.setCancelable(true)
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {

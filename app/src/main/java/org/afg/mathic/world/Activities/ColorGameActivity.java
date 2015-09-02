@@ -37,7 +37,7 @@ public class ColorGameActivity extends GameActivity {
 
 	public void info(View v){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Look at this dialog!")
+		builder.setMessage("Answer if the color of the background maches with the color that the word presents")
 				.setCancelable(true)
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {

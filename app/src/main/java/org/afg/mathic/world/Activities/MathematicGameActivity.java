@@ -37,7 +37,7 @@ public class MathematicGameActivity extends GameActivity {
 
 	public void info(View v){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Look at this dialog!")
+		builder.setMessage("Answer if the equasion is correct or not")
 				.setCancelable(true)
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {

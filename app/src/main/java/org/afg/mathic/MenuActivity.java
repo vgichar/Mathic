@@ -84,10 +84,14 @@ public class MenuActivity extends Activity {
         }
 	}
 
+	public void onPause(){
+		super.onPause();
+		MediaPlayerManager.stop();
+	}
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-        MediaPlayerManager.stop();
 
         mIsSplashLoaded = false;
 	}
